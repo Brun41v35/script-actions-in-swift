@@ -1,25 +1,26 @@
 name: Generate JSON Artifact
-'on':
-  push:
-    branches:
-      - main
-workflow_dispatch: null
-jobs: null
-test: null
-runs-on: macos-latest
-steps:
-  - name: Checkout repository
-    uses: actions/checkout@v4
-  - name: Run Tests
-    run: |
 
-      xcodebuild test \
-        -project SeuProjeto.xcodeproj \
-        -scheme SeuProjeto \
-        -destination 'platform=iOS Simulator,name=iPhone 17'
-  - name: Upload Test Results
-    uses: actions/upload-artifact@v4
-    with:
-      name: TestResults
-      path: |
-        ~/Library/Developer/Xcode/DerivedData
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Tests
+        run: |
+          xcodebuild test \
+            -project ScriptActions.xcodeproj \
+            -scheme ScriptActions \
+            -destination 'platform=iOS Simulator,name=iPhone 17' \
+            -resultBundlePath TestResults.xcresult
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: TestResults
+          path: TestResults.xcresult
