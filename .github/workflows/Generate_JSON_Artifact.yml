@@ -1,19 +1,25 @@
-# This workflow will build a Swift project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
-
 name: Generate JSON Artifact
+'on':
+  push:
+    branches:
+      - main
+workflow_dispatch: null
+jobs: null
+test: null
+runs-on: macos-latest
+steps:
+  - name: Checkout repository
+    uses: actions/checkout@v4
+  - name: Run Tests
+    run: |
 
-on:
-  workflow_dispatch:
-
-jobs:
-  build:
-
-    runs-on: macos-latest
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Build
-      run: swift build -v
-    - name: Run tests
-      run: swift test -v
+      xcodebuild test \
+        -project SeuProjeto.xcodeproj \
+        -scheme SeuProjeto \
+        -destination 'platform=iOS Simulator,name=iPhone 17'
+  - name: Upload Test Results
+    uses: actions/upload-artifact@v4
+    with:
+      name: TestResults
+      path: |
+        ~/Library/Developer/Xcode/DerivedData
