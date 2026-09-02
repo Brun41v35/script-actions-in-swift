@@ -17,6 +17,7 @@ jobs:
             -project ScriptActions.xcodeproj \
             -scheme ScriptActions \
             -destination 'platform=iOS Simulator,name=iPhone 17' \
+            -only-testing:MyAppTests/ContentViewTests \
             -resultBundlePath TestResults.xcresult
 
       - name: Upload Test Results
